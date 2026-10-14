@@ -7741,7 +7741,7 @@ static void t_pvstar(int *status)
 **
 **  Called:  eraPvstar, vvd, viv
 **
-**  This revision:  2017 March 15
+**  This revision:  2026 October 14
 */
 {
    double pv[2][3], ra, dec, pmr, pmd, px, rv;
@@ -7766,6 +7766,20 @@ static void t_pvstar(int *status)
    vvd(rv, -21.60000010107306010, 1e-11, "eraPvstar", "rv", status);
 
    viv(j, 0, "eraPvstar", "j", status);
+
+/* The input pv-vector must be unchanged. */
+   vvd(pv[0][0], 126668.5912743160601, 0.0,
+       "eraPvstar", "pv01", status);
+   vvd(pv[0][1], 2136.792716839935195, 0.0,
+       "eraPvstar", "pv02", status);
+   vvd(pv[0][2], -245251.2339876830091, 0.0,
+       "eraPvstar", "pv03", status);
+   vvd(pv[1][0], -0.4051854035740712739e-2, 0.0,
+       "eraPvstar", "pv11", status);
+   vvd(pv[1][1], -0.6253919754866173866e-2, 0.0,
+       "eraPvstar", "pv12", status);
+   vvd(pv[1][2], 0.1189353719774107189e-1, 0.0,
+       "eraPvstar", "pv13", status);
 
 }
 

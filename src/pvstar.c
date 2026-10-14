@@ -86,6 +86,7 @@ int eraPvstar(double pv[2][3], double *ra, double *dec,
 **     eraSxp       multiply p-vector by scalar
 **     eraPmp       p-vector minus p-vector
 **     eraPm        modulus of p-vector
+**     eraCp        copy p-vector
 **     eraPpp       p-vector plus p-vector
 **     eraPv2s      pv-vector to spherical
 **     eraAnp       normalize angle into range 0 to 2pi
@@ -94,14 +95,14 @@ int eraPvstar(double pv[2][3], double *ra, double *dec,
 **
 **     Stumpff, P., 1985, Astron.Astrophys. 144, 232-240.
 **
-**  This revision:  2023 May 4
+**  This revision:  2026 October 14
 **
 **  Copyright (C) 2013-2023, NumFOCUS Foundation.
 **  Derived, with permission, from the SOFA library.  See notes at end of file.
 */
 {
    double r, pu[3], vr, ur[3], vt, ut[3], bett, betr, d, w, del,
-          usr[3], ust[3], a, rad, decd, rd;
+          usr[3], ust[3], pv2[2][3], a, rad, decd, rd;
 
 
 /* Isolate the radial component of the velocity (au/day, inertial). */
@@ -129,11 +130,12 @@ int eraPvstar(double pv[2][3], double *ra, double *dec,
 /* Compute observed radial velocity vector (au/d). */
    eraSxp(ERFA_DC*(betr-del)/d, pu, usr);
 
-/* Combine the two to obtain the observed velocity vector. */
-   eraPpp(usr, ust, pv[1]);
+/* Copy position and combine the two velocity components. */
+   eraCp(pv[0], pv2[0]);
+   eraPpp(usr, ust, pv2[1]);
 
 /* Cartesian to spherical. */
-   eraPv2s(pv, &a, dec, &r, &rad, &decd, &rd);
+   eraPv2s(pv2, &a, dec, &r, &rad, &decd, &rd);
    if (r == 0.0) return -2;
 
 /* Return RA in range 0 to 2pi. */
